@@ -19,7 +19,6 @@ func LoadConfig() {
 	err := viper.ReadInConfig()
 	if err != nil {
 		logger.Log.Error("Error loading config file", zap.Error(err))
-
 	}
 
 	AppConfig = &Config{
