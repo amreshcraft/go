@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"go-server/internal/config"
+	"go-server/internal/cube"
 	"go-server/internal/logger"
+	"go-server/internal/middleware"
 	"net/http"
 )
 
@@ -23,6 +25,8 @@ func main() {
 		}
 		json.NewEncoder(w).Encode(response)
 	})
-	logger.Log.Info("Server is started at https://localhost:" + config.AppConfig.Port)
-	http.ListenAndServe(":"+config.AppConfig.Port, mux)
+	mux.HandleFunc("/cube", cube.CalculateCubeHandler)
+	middlewareChain := middleware.Chain(mux,middleware.LoggerMiddleware,middleware.RecoveryMiddleware)
+	logger.Log.Info("Server is started at http://localhost:" + config.AppConfig.Port)
+	http.ListenAndServe(":"+config.AppConfig.Port, middlewareChain)
 }
