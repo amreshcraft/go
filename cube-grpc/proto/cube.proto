@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package cube;
+
+option go_package = "./proto";
+
+service CubeService {
+    rpc CalculateCube (CubeRequest) returns (CubeResponse);
+}
+
+message CubeRequest {
+    int64 number = 1;
+}
+
+message CubeResponse {
+    int64 result = 1;
+}
